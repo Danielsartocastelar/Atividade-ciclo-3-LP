@@ -1,0 +1,81 @@
+import tkinter as tk
+
+def calcular_imc():
+    try:
+        altura = float(altura_entry.get())
+        peso = float(peso_entry.get())
+        imc = peso / ((altura / 100) ** 2)
+        resultado_text.delete(1.0, tk.END)  # Limpa o campo de resultado
+        resultado_text.insert(tk.END, f"IMC: {imc:.2f}\n")
+
+        # Determinar a situação com base no IMC
+        if imc < 18.5:
+            resultado_text.insert(tk.END, "Situação: Abaixo do Peso")
+        elif 18.5 <= imc < 24.9:
+            resultado_text.insert(tk.END, "Situação: Peso Normal")
+        elif 25 <= imc < 29.9:
+            resultado_text.insert(tk.END, "Situação: Sobrepeso")
+        elif 30 <= imc < 34.9:
+            resultado_text.insert(tk.END, "Situação: Obesidade Grau 1")
+        elif 35 <= imc < 39.9:
+            resultado_text.insert(tk.END, "Situação: Obesidade Grau 2")
+        else:
+            resultado_text.insert(tk.END, "Situação: Obesidade Grau 3")
+    except ValueError:
+        resultado_text.delete(1.0, tk.END)
+        resultado_text.insert(tk.END, "Valores inválidos")
+
+def reiniciar():
+    nome_entry.delete(0, 'end')
+    endereco_entry.delete(0, 'end')
+    altura_entry.delete(0, 'end')
+    peso_entry.delete(0, 'end')
+    resultado_text.delete(1.0, tk.END)
+
+def sair():
+    janela.quit()
+
+# Cria a janela
+janela = tk.Tk()
+janela.title("Cálculo do IMC - Índice de Massa Corporal")
+
+# Configura o tamanho da janela
+janela.geometry("700x310")  # Largura x Altura
+
+# Rótulos à esquerda dos campos de entrada
+tk.Label(janela, text="Nome do paciente:").grid(row=0, column=0, sticky="w")
+nome_entry = tk.Entry(janela, width=50)
+nome_entry.grid(row=0, column=1, padx=10, pady=10, sticky="w")
+
+tk.Label(janela, text="Endereço completo:").grid(row=1, column=0, sticky="w")
+endereco_entry = tk.Entry(janela, width=50)
+endereco_entry.grid(row=1, column=1, padx=10, pady=10, sticky="w")
+
+tk.Label(janela, text="Altura (cm):").grid(row=2, column=0, sticky="w")
+altura_entry = tk.Entry(janela)
+altura_entry.grid(row=2, column=1, padx=10, pady=10, sticky="w")
+
+tk.Label(janela, text="Peso (kg):").grid(row=3, column=0, sticky="w")
+peso_entry = tk.Entry(janela)
+peso_entry.grid(row=3, column=1, padx=10, pady=10, sticky="w")
+
+# Campo retangular para exibir o resultado
+resultado_text = tk.Text(janela, width=40, height=9)
+resultado_text.grid(row=2, column=2, rowspan=4, padx=10, pady=10)
+
+# Botões de calcular, reiniciar e sair
+calcular_button = tk.Button(janela, text="Calcular", command=calcular_imc, width=20, height=2)
+calcular_button.grid(row=6, column=0, padx=10, pady=10)
+
+reiniciar_button = tk.Button(janela, text="Reiniciar", command=reiniciar, width=20, height=2)
+reiniciar_button.grid(row=6, column=1, padx=10, pady=10)
+
+sair_button = tk.Button(janela, text="Sair", command=sair, width=20, height=2)
+sair_button.grid(row=6, column=2, padx=10, pady=10)
+
+# Define pesos nas colunas para ajustar o tamanho automaticamente
+janela.grid_columnconfigure(0, weight=1)
+janela.grid_columnconfigure(1, weight=1)
+janela.grid_columnconfigure(2, weight=2)
+
+janela.mainloop()
